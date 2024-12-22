@@ -1,26 +1,64 @@
 import mongoose from "mongoose";
 
 
-const courseSchema = new mongoose.Schema(
+const postSchema = new mongoose.Schema(
     {
-        name: {
+        title: {
             type: String,
             required: true,
         },
-        duration: {
-            type: Number,
-            default: 12,
+        content: {
+            type: String,
+            required: true,
         },
-        enrolledStudents: [
+        author:
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            required: true
+        },
+        like: [
+
             {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: "Students",
+                ref: "User",
             },
         ],
+        comments: [
+
+            {
+                user: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: "User"
+                },
+                text: String,
+                createdAt: {
+                    type: Date,
+                    default: Date.now,
+                },
+            },
+        ],
+        reposts: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "User"
+            },
+        ],
+        bookmarks: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "User"
+            },
+        ],
+        privacy:
+        {
+            type: String,
+            default: "public"
+        },
     },
     {
         timestamps: true,
     }
 );
 
-export default mongoose.model("Course", courseSchema);
+export default mongoose.model("Post", postSchema);
